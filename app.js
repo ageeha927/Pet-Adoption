@@ -1,25 +1,27 @@
 const express = require('express');
-
 const app = express();
-const pets = require('./routes/pets');
 const connectDB = require('./db/connect');
-const port = process.env.PORT | 3000;
+const pets = require("./routes/petActions");
+const port = process.env.PORT || 5001;
 
-//Libraries
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(express.json());
+app.set('view engine', 'ejs'); 
 
+// Use pets routes
+app.use('/', pets); 
+
+// Initialize server
 const serverInit = async () => {
     try {
         await connectDB();
-        console.log('Connected to MongoDB');
-        app.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
-        });
+        console.log('Database connected');
+        app.listen(port, () => console.log('Server running on port ' + port));
     } catch (error) {
-        console.log(error);
+        console.error('Error connecting to database:', error.message);
     }
-}
+};
 
 serverInit();
