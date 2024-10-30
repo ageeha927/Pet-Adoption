@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { getallPets } = require("../controller/pets"); // Ensure the correct path
+const { allPets, searchPets } = require("../controller/pets"); // Ensure the correct path
 
 // GET all pets and render index.ejs
-router.get("/", getallPets);
+router.get("/", searchPets);
 
 module.exports = router;

@@ -1,12 +1,18 @@
-const Pet = require('../models/pets');
+const { Dragon, Frog, Snake } = require('../models/pets');
 const asyncWrapper = require("../middleware/async");
 
-const getallPets = asyncWrapper(async (req, res) => {
-    const pets = await Pet.find({});
-    console.log(pets); // Print all pets to the console
+let dragons, frogs, snakes;
 
-    // Optionally, render the index view and pass the pets data to it
-    res.render("index", { pets });
+const allPets = async () => {
+    dragons = await Dragon.find({});
+    frogs = await Frog.find({});
+    snakes = await Snake.find({});
+};
+
+const searchPets = asyncWrapper(async (req, res) => {
+    await allPets();
+    console.log(dragons); 
+    res.render("index", { dragons, frogs, snakes });
 });
 
-module.exports = { getallPets };
+module.exports = { allPets, searchPets };
