@@ -1,18 +1,18 @@
-const { Dragon, Frog, Snake } = require('../models/pets');
+const Pet = require("../models/pets")
 const asyncWrapper = require("../middleware/async");
 
-let dragons, frogs, snakes;
-
-const allPets = async () => {
-    dragons = await Dragon.find({});
-    frogs = await Frog.find({});
-    snakes = await Snake.find({});
-};
-
 const searchPets = asyncWrapper(async (req, res) => {
-    await allPets();
-    console.log(dragons); 
-    res.render("index", { dragons, frogs, snakes });
+    //b insures the first letter of each word, w matches each "word character", and then g stands for global, meaning it goes through the entire string. After all of this, it uppercases it. / reperesents the start of the regex, or string. 
+    const searchName = req.body.searchBar.replace(/\b\w/g, char => char.toUpperCase());
+    const pets = await Pet.find({name:searchName});
+    console.log(searchName)
+    console.log(pets)
+    console.log(req.body)
+    res.render("index", {pets});
 });
 
-module.exports = { allPets, searchPets };
+const featuredPets = asyncWrapper(async (req,res) =>{
+
+})
+
+module.exports = {searchPets };

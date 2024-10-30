@@ -1,39 +1,17 @@
 const mongoose = require('mongoose');
 
-const dragonSchema = new mongoose.Schema({
+const petSchema = new mongoose.Schema({
     name: { type: String, required: true },
     species: { type: String, required: true },
     age: { type: Number, required: true },
     description: { type: String },
     behavior: { type: String },
     history: { type: String },
-    image_url: { type: String }
-}, {collection:"Dragons"});
+    image_url: { type: String },
+    popularity: { type: mongoose.Schema.Types.Decimal128 },
+    type: {type:String}
+}, {collection:"Pets"});
 
-const frogSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    species: { type: String, required: true },
-    age: { type: Number, required: true },
-    description: { type: String },
-    behavior: { type: String },
-    history: { type: String },
-    image_url: { type: String }
-}, {collection:"Frogs"});
+const Pet = mongoose.model('Pets', petSchema);
 
-const snakeSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    species: { type: String, required: true },
-    age: { type: Number, required: true },
-    description: { type: String },
-    behavior: { type: String },
-    history: { type: String },
-    image_url: { type: String }
-}, {collection:"Snakes"});
-
-// const Pet = mongoose.model('Pets', petSchema);
-const Dragon = mongoose.model('Dragon', dragonSchema);
-const Frog = mongoose.model("Frog", frogSchema);
-const Snake = mongoose.model('Snake', snakeSchema);
-
-
-module.exports = {Dragon, Frog, Snake};
+module.exports = Pet;
