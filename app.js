@@ -10,8 +10,14 @@ app.use(express.static('public'));
 app.use(express.json());
 app.set('view engine', 'ejs'); 
 
+
 // Use pets routes
 app.use('/', pets); 
+
+// app.get("/", (req, res) => {
+//     res.render("index");
+// });
+
 
 // Initialize server
 const serverInit = async () => {

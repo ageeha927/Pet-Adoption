@@ -6,16 +6,21 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/" method="POST">
+    <p>hi</p>
+    <form action="/search" method="POST">
         <input type="text" name="searchBar">    
         <button type="submit">Submit</button>    
     </form>
-
-    <form action="/" method="get">
-        <input type="radio" name="animal" value="Snakes" checked> Snakes
-        <input type="radio" name="animal" value="Lizards"> Lizards
-        <input type="radio" name="animal" value="Frogs"> Frogs
+    <form action="/" method="get" id="petForm">
+        <input type="radio" name="animal" value="Snake" checked> Snakes
+        <input type="radio" name="animal" value="Lizard"> Lizards
+        <input type="radio" name="animal" value="Frog"> Frogs
     </form>
+    <!-- <form action="" method="">
+
+    </form> -->
+
+    
     
     
     <!-- <div class="flex justify-center space-x-[2vw] mt-12">
@@ -26,5 +31,16 @@
             <button name="action" value="stand" class="text-[2vw] px-6 py-3 bg-[#588157] text-white rounded-lg hover:bg-[#3a5a40] transition duration-100">Stand</button>
         </form>
     </div> -->
+    <script>
+        document.getElementById('petForm').addEventListener('change', event => {
+    fetch('/', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ animal: event.target.value }),
+    });
+});
+
+    </script>
+    
 </body>
 </html>
