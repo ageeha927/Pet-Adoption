@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>search</p>
+    <form action="/search" method="POST">
+        <input type="text" name="searchBar">
+        <button type="submit">Submit</button>
+    </form>
+    <% if (pets && pets.length > 0) { %>
+        <ul>
+            <% pets.forEach(pet => { %>
+                <li>
+                    <h2><%= pet.name %></h2>
+                    <p><%= pet.description %></p>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No pets found.</p>
+    <% } %>
+    
+
+    
+</body>
+</html>

@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { startPage, searchPets, featuredPets } = require('../controller/pets');
 
-// Render index page
-router.get("/",startPage)
-
-router.post("/search", searchPets);
-// router.post("/", featuredPets);
+router.post('/', featuredPets); // Handle AJAX requests for pet updates
+router.get('/', startPage); // Handle initial page load
+router.post("/search", searchPets); // Handle search requests
 
 module.exports = router;

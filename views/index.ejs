@@ -15,7 +15,17 @@
         <input type="radio" name="animal" value="Snake" checked> Snakes
         <input type="radio" name="animal" value="Lizard"> Lizards
         <input type="radio" name="animal" value="Frog"> Frogs
+        <input type="submit">
     </form>
+    <div id="petContainer">
+        <% pets.forEach(pet => { %>
+            <div>
+                <h2><%= pet.name %></h2>
+                <p><%= pet.description %></p>
+            </div>
+        <% }) %>
+    </div>
+    
     <!-- <form action="" method="">
 
     </form> -->
@@ -32,15 +42,18 @@
         </form>
     </div> -->
     <script>
-        document.getElementById('petForm').addEventListener('change', event => {
-    fetch('/', {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ animal: event.target.value }),
-    });
-});
-
+        document.getElementById('petForm').addEventListener('click', event => {
+            if (event.target.matches('input[type="radio"]')) {
+                fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ animal: event.target.value })
+                })
+                document.getElementById('petForm').submit();
+            }
+        });
     </script>
+    
     
 </body>
 </html>
