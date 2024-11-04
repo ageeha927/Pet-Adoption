@@ -6,6 +6,24 @@
     <title>Document</title>
 </head>
 <body>
+    <form action="/display" method="POST">
+        <button name="searchBar" value="<%= searchValue %>">&#8592;</button>
+    </form>
     <p>Pet Profile</p>
+    <div id="petContainer">
+            <h2><%= pet.name %></h2>
+            <p><%= pet.description %></p>
+    </div>
+
+    <form class="petContact">
+        <h4>Contact</h4>
+        <p>Name</p>
+          <input type="text" name="name" placeholder="John Doe">
+        <p>Email</p>
+        <input type="email" name="email" placeholder="john.doe@example.com">
+        <p>Message</p>
+        <textarea name="message" placeholder="Your message here"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
 </body>
 </html>

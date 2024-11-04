@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/" class="uploadPet" method="POST">
+        <h4>Add a New Pet</h4>
+        
+        <p>Pet Name</p>
+        <input type="text" name="name" placeholder="Pet Name" required>
+
+        <p>Breed</p>
+        <input type="text" name="breed" placeholder="Breed" required>
+
+        <p>Species</p>
+        <input type="text" name="species" placeholder="Species" required>
+
+        <p>Age (in years)</p>
+        <input type="number" name="age" placeholder="Age" required>
+
+        <p>Description</p>
+        <textarea name="description" placeholder="Description of the pet"></textarea>
+
+        <p>Behavior</p>
+        <textarea name="behavior" placeholder="Behavior description"></textarea>
+
+        <p>History</p>
+        <textarea name="history" placeholder="History of the pet"></textarea>
+
+        <p>Image URL</p>
+        <input type="url" name="image_url" placeholder="Image URL">
+
+        <p>Popularity (0 - 100)</p>
+        <input type="number" name="popularity" min="0" max="100" placeholder="Popularity" step="1">
+
+        <p>Type</p>
+        <select name="type" required>
+            <option value="Snake">Snake</option>
+            <option value="Lizard">Lizard</option>
+            <option value="Frog">Frog</option>
+        </select>
+
+        <p>Gender</p>
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <p>Location</p>
+        <select name="location" required>
+            <option value="North West">North West</option>
+            <option value="West">West</option>
+            <option value="South West">South West</option>
+            <option value="Mid West">Mid West</option>
+            <option value="South East">South East</option>
+            <option value="Mid Atlantic">Mid Atlantic</option>
+            <option value="North East">North East</option>
+        </select>
+        <button type="submit">Add Pet</button>
+    </form>
+</body>
+</html>

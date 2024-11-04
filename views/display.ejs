@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>display pets</p>
+    <form action="/display" method="POST">
+        <input type="text" name="searchBar" value="<%= searchValue %>">
+        <button type="submit" >Submit</button>
+    </form>
+    <% if (pets && pets.length > 0) { %>
+        <ul>
+            <% pets.forEach(pet => { %>
+                <div class="pet-div" id="<%= pet._id %>">
+                    <li>
+                        <h2><%= pet.name %></h2>
+                        <p><%= pet.description %></p>
+                    </li>
+                </div>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No pets found.</p>
+    <% } %>
+    
+    <script>
+        // adds a event listener to each div, and then each time its clicked it will redirect to the petProfile with the div id page.
+        document.querySelectorAll('.pet-div').forEach(div => {
+            div.addEventListener('click', async () => {
+                // console.log("Clicked div with ID:", div.id);
+                try {
+                    window.location.href = `/petProfile?id=${div.id}`;
+                } catch (error) {
+                    console.error('Error getting pet:', error);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,9 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { startPage, searchPets, featuredPets } = require('../controller/pets');
+const { startPage, searchPets, featuredPets, displayPage, petProfile, upload, addPet} = require('../controller/pets');
 
-router.post('/', featuredPets); // Handle AJAX requests for pet updates
-router.get('/', startPage); // Handle initial page load
-router.post("/search", searchPets); // Handle search requests
+router.post('/', featuredPets); 
+router.get('/', startPage);
+
+router.post("/display", searchPets);
+
+
+
+router.get("/display", displayPage);
+
+
+router.get("/petProfile", petProfile)
+
+
+router.get("/uploadPet", upload);
+router.post('/', addPet);
 
 module.exports = router;
