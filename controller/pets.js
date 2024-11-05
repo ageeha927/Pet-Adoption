@@ -1,5 +1,10 @@
 const Pet = require("../models/pets")
 const asyncWrapper = require("../middleware/async");
+const bcrypt = require('bcrypt');
+const User = require('../models/users');
+
+
+
 // Change the amount of pets displayed in the home page
 let maximum = 3
 let featured = "Snake"
@@ -7,9 +12,11 @@ let searchValue = ""
 
 // Home Page
 const startPage = asyncWrapper(async (req,res) => {
-    const pets = await Pet.find({type:featured});
+    const pets = await Pet.find({});
     // console.log(pets)
+    console.log(pets)
     res.render('index', { pets: pets.slice(0,maximum) });
+
 
 })
 
@@ -22,7 +29,7 @@ const displayPage = asyncWrapper(async (req,res) => {
 const featuredPets = asyncWrapper(async (req, res) => {
     featured = req.body.animal;
     const pets = await Pet.find({ type: featured }).sort({ popularity: -1 });
-    console.log(featured);
+    // console.log(featured);
     // this was explained in index, but it basically checks and makes sure both of these values are requested by the client side, and then it runs the code to send the json over.
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
         return res.json({ pets: pets.slice(0,maximum) });
@@ -60,7 +67,7 @@ const searchPets = asyncWrapper(async (req, res) => {
     searchValue = (req.body.searchBar) ? req.body.searchBar : "";
     // console.log(searchName)
     // console.log(req.body)
-    console.log(pets)
+    // console.log(pets)
     res.render('display', {pets, searchValue:searchValue})
     }else{
         const pets = await Pet.find({});
@@ -84,31 +91,52 @@ const upload = asyncWrapper(async (req, res) => {
 });
 
 const addPet = asyncWrapper(async (req, res) => {
-    const { name, breed, species, age, description, behavior, history, image_url, popularity, type, gender, location, interested } = req.body;
+    const petData = {
+        ...req.body,
+        popularity: 0
+    };
 
-    const newPet = new Pet({
-        name,
-        breed,
-        species,
-        age,
-        description,
-        behavior,
-        history,
-        image_url,
-        popularity: parseInt(popularity),
-        type,
-        gender,
-        location,
-        interested: {
-            name: interested.name || "",
-            email: interested.email || "",
-            message: interested.message || ""
-        }
+    const newPet = new Pet(petData);
+    newPet.save()
+    res.render('submission')
+});
+
+const user = asyncWrapper(async (req, res) => {
+    res.render('user'); // Render the user registration form
+});
+
+const userData = asyncWrapper(async (req, res) => {
+    const { email, password } = req.body; // Destructure email and password from request body
+
+    if (!password) {
+        return res.status(400).send('Password is required'); // Validate password
+    }
+
+    console.log(email); // Log email for debugging
+
+    // Check if the user already exists
+    const user = await User.findOne({ email });
+    if (user) {
+        return res.status(400).send('User already exists');
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
+
+    // Create a new user instance
+    const newUser = new User({ 
+        email, 
+        password: hashedPassword, 
+        administrator: false // Use boolean value
     });
 
-    await newPet.save();
-    res.redirect('index'); 
+    // Save the new user to the database
+    await newUser.save();
+    console.log("User saved to database")
+    
+    // Respond with a success message
+    res.status(201).send('User created successfully');
 });
 
 
-module.exports = {startPage, displayPage, searchPets, featuredPets, petProfile, upload, addPet};
+module.exports = {startPage, displayPage, searchPets, featuredPets, petProfile, upload, addPet, user, userData};
