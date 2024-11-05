@@ -100,43 +100,33 @@ const addPet = asyncWrapper(async (req, res) => {
     newPet.save()
     res.render('submission')
 });
-
+let loggedUser = false;
+    let count = false;
 const user = asyncWrapper(async (req, res) => {
     res.render('user'); // Render the user registration form
 });
 
-const userData = asyncWrapper(async (req, res) => {
-    const { email, password } = req.body; // Destructure email and password from request body
 
-    if (!password) {
-        return res.status(400).send('Password is required'); // Validate password
-    }
+const userData = asyncWrapper(async (req, res) => {
+    
+    let { email } = req.body;
+    email = email.toLowerCase();
 
     console.log(email); // Log email for debugging
 
     // Check if the user already exists
     const user = await User.findOne({ email });
     if (user) {
-        return res.status(400).send('User already exists');
+        loggedUser = true;
+        count = true;
+    } else {
+        count = true;
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
-
-    // Create a new user instance
-    const newUser = new User({ 
-        email, 
-        password: hashedPassword, 
-        administrator: false // Use boolean value
-    });
-
-    // Save the new user to the database
-    await newUser.save();
-    console.log("User saved to database")
-    
-    // Respond with a success message
-    res.status(201).send('User created successfully');
+    // Render the user page with `loggedUser` and `count` values
+    res.render("user", { loggedUser:loggedUser, count:count });
 });
+
 
 
 module.exports = {startPage, displayPage, searchPets, featuredPets, petProfile, upload, addPet, user, userData};
