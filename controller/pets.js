@@ -2,7 +2,7 @@ const Pet = require("../models/pets")
 const asyncWrapper = require("../middleware/async");
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
-
+const loggedIn = false;
 
 
 // Change the amount of pets displayed in the home page
@@ -10,16 +10,19 @@ let maximum = 3
 let featured = "Snake"
 let searchValue = ""
 
-// Home Page
-const startPage = asyncWrapper(async (req,res) => {
+const startPage = asyncWrapper(async (req, res) => {
+    // Get cookies
+    const loggedIn = req.cookies.loggedIn || false;  // Check if loggedIn cookie exists
+    const loggedInEmail = req.cookies.email || '';   // Get email cookie if logged in
+
     const pets = await Pet.find({});
-    // console.log(pets)
-    console.log(pets)
-    res.render('index', { pets: pets.slice(0,maximum) });
-
-
-})
-
+    // Render the 'index' page with the logged-in status and email if logged in
+    res.render('index', { 
+        pets: pets.slice(0, maximum),
+        loggedIn: loggedIn, 
+        loggedInEmail: loggedInEmail // Pass the loggedInEmail to the template
+    });
+});
 const displayPage = asyncWrapper(async (req,res) => {
     const pets = await Pet.find({});
     // console.log(pets)
@@ -100,33 +103,106 @@ const addPet = asyncWrapper(async (req, res) => {
     newPet.save()
     res.render('submission')
 });
-let loggedUser = false;
-    let count = false;
-const user = asyncWrapper(async (req, res) => {
-    res.render('user'); // Render the user registration form
+
+// const user = asyncWrapper(async (req, res) => {
+//     res.render('user', {loggedUser: null}); // Render the user registration form
+// });
+
+// const userData = asyncWrapper(async (req, res) => {
+//     const { email, password } = req.body; // Destructure email and password from request body
+
+//     if (!password) {
+//         return res.status(400).send('Password is required'); // Validate password
+//     }
+
+//     console.log(email); // Log email for debugging
+
+//     // Check if the user already exists
+//     const user = await User.findOne({ email });
+//     if (user) {
+//         return res.status(400).send('User already exists');
+//     }
+
+//     // Hash the password
+//     const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
+
+//     // Create a new user instance
+//     const newUser = new User({ 
+//         email, 
+//         password: hashedPassword, 
+//         administrator: false // Use boolean value
+//     });
+
+//     // Save the new user to the database
+//     await newUser.save();
+//     console.log("User saved to database")
+    
+//     // Respond with a success message
+//     res.status(201).send('User created successfully');
+// });
+
+const showEmailForm = asyncWrapper(async (req, res) => {
+    res.render('user', { emailSubmitted: false, emailExists: null }); // Initial render
 });
 
-
-const userData = asyncWrapper(async (req, res) => {
-    
-    let { email } = req.body;
-    email = email.toLowerCase();
-
-    console.log(email); // Log email for debugging
-
-    // Check if the user already exists
+// Step 2: Handle email submission
+const handleEmailSubmission = asyncWrapper(async (req, res) => {
+    const { email } = req.body;
     const user = await User.findOne({ email });
+
     if (user) {
-        loggedUser = true;
-        count = true;
+        res.render('user', { emailSubmitted: true, emailExists: true, email });
     } else {
-        count = true;
+        res.render('user', { emailSubmitted: true, emailExists: false, email });
+    }
+});
+
+const createAccount = asyncWrapper(async (req, res) => {
+    const pets = await Pet.find({});
+    const { email, password } = req.body;
+    
+    // Check if email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).send('Email already registered. Please login.');
     }
 
-    // Render the user page with `loggedUser` and `count` values
-    res.render("user", { loggedUser:loggedUser, count:count });
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user
+    const newUser = new User({
+        email,
+        password: hashedPassword,
+        administrator: false
+    });
+
+    await newUser.save();
+    
+    // Set a cookie indicating the user is logged in
+    res.cookie('loggedIn', true, { httpOnly: true, maxAge: 86400000 }); // 1 day expiration
+
+    res.redirect("/");  // Redirect to homepage after successful account creation
+});
+const logAccount = asyncWrapper(async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    
+    if (user && await bcrypt.compare(password, user.password)) {
+        // Set cookies when user logs in
+        res.cookie('loggedIn', true, {maxAge: 3600000});
+        res.cookie('email', email, {maxAge: 3600000 });
+
+        res.redirect("/");  // Redirect to homepage after successful login
+    } else {
+        res.send("Invalid email or password");
+    }
 });
 
+const logOut = asyncWrapper(async (req,res) =>{
+    res.clearCookie('loggedIn');
+    res.clearCookie('email');
+    res.redirect("/"); 
 
-
-module.exports = {startPage, displayPage, searchPets, featuredPets, petProfile, upload, addPet, user, userData};
+})
+module.exports = {startPage, displayPage, searchPets, featuredPets, petProfile, upload, addPet, showEmailForm, handleEmailSubmission, createAccount, logAccount,logOut};

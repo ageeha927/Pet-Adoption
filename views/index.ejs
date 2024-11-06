@@ -36,6 +36,14 @@
     <form action="/user" method="get">
         <button>Sign Up</button>
     </form>
+    <% if (loggedIn) { %>
+        <p>Welcome back!</p>
+        <form action="/logout" method="POST">
+            <button type="submit">Log Out</button>
+        </form>
+    <% } else { %>
+        <p>Please log in or create an account.</p>
+    <% } %>
 
     <!-- <form action="/display" method="GET">
         <label for="sortBy">Sort by:</label>

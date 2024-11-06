@@ -13,6 +13,7 @@ const petSchema = new mongoose.Schema({
     type: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female"], required: true },
     location: { type: String, enum: ["North West", "West", "South West", "Mid West", "South East", "Mid Atlantic", "North East"], required: true }
+    
 }, { 
     collection: "Pets",
     versionKey: false

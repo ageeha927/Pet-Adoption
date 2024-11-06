@@ -3,6 +3,8 @@ const app = express();
 const connectDB = require('./db/connect');
 const pets = require("./routes/petActions");
 const port = process.env.PORT || 5001;
+const cookieParser = require('cookie-parser');
+app.use(cookieParser('password')); 
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));

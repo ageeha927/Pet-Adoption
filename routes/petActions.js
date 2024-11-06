@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { startPage, searchPets, featuredPets, displayPage, petProfile, upload, addPet, user, userData} = require('../controller/pets');
+const { startPage, searchPets, featuredPets, displayPage, petProfile, upload, addPet, showEmailForm, handleEmailSubmission, createAccount, logAccount, logOut} = require('../controller/pets');
 
 router.post('/', featuredPets); 
 router.get('/', startPage);
@@ -19,6 +19,12 @@ router.get("/uploadPet", upload);
 router.post('/uploadPet', addPet);
 
 
-router.get('/user', user);
-router.post("/user", userData)
+router.get('/user', showEmailForm);
+
+router.post('/submitEmail', handleEmailSubmission);
+
+router.post('/login', logAccount);
+router.post('/signup', createAccount);
+
+router.post("/logout", logOut);
 module.exports = router;
