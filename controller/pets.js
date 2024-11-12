@@ -22,24 +22,25 @@ let searchValue = "";
 const startPage = asyncWrapper(async (req, res) => {
     const loggedIn = req.cookies.loggedIn || false;  
     const loggedInAdmin = req.cookies.administrator; 
-    const pets = await Pet.find({});
+    const email = req.cookies.email || "undefined@undefined.com"
+    const pet = await Pet.find({});
     res.render('index', { 
-        pets: pets.slice(0, maximum), loggedIn, loggedInAdmin
+        pet: pet.slice(0, maximum), loggedIn, loggedInAdmin, email
     });
 });
 
 const displayPage = asyncWrapper(async (req, res) => {
     const pets = await Pet.find({});
-    res.render('display', { pets, searchValue: "" });
+    res.render('display', { pets, searchValue: "" });  // Change 'pet' to 'pets'
 });
 
 const featuredPets = asyncWrapper(async (req, res) => {
     featured = req.body.animal;
-    const pets = await Pet.find({ type: featured }).sort({ popularity: -1 });
+    const pet = await Pet.find({ type: featured }).sort({ popularity: -1 });
     if (req.headers.accept && req.headers.accept.includes('application/json')) {
-        return res.json({ pets: pets.slice(0, maximum) });
+        return res.json({ pet: pet.slice(0, maximum) });
     }
-    res.render("index", { pets: pets.slice(0, maximum) });
+    res.render("index", { pet: pet.slice(0, maximum) });
 });
 
 const searchPets = asyncWrapper(async (req, res) => {

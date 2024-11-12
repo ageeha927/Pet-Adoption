@@ -21,7 +21,7 @@
         </div>
         
         <nav class="menu-items">
-            <a href="#" class="menu-item">
+            <a href="/" class="menu-item">
                 <div class="menu-item-icon">🏠</div>
                 Home
             </a>
@@ -57,30 +57,28 @@
     </div>
 
     <% if (pets && pets.length > 0) { %>
-    <div id="petContainer">
-        <% pets.forEach(pet => { %>
-            <div class="pet-card" onclick="goToPetProfile('<%= pet._id %>')">
-                <img src="/api/placeholder/400/300" alt="<%= pet.name %>">
-                <div class="pet-info">
-                    <h2 class="pet-name">
-                        <%= pet.name %>
-                        <span class="gender-icon">
-                            <% if (pet.gender === 'Male') { %>
-                                <img class="Mgender" src="/maleIcon.png" alt="male">
-                            <% } else { %>
-                                <img class="Fgender" src="/femaleIcon.png" alt="female">
-                            <% } %>
-                        </span>
-                    </h2>
-                    <p><%= pet.description %></p>
+        <div id="petContainer">
+            <% pets.forEach(pet => { %>
+                <div class="pet-card" onclick="goToPetProfile('<%= pet._id %>')" data-image-url="<%= pet.image_url %>">
+                    <div class="pet-info">
+                        <h2 class="pet-name">
+                            <%= pet.name %>
+                            <span class="gender-icon">
+                                <% if (pet.gender === 'Male') { %>
+                                    <img class="Mgender" src="/maleIcon.png" alt="male">
+                                <% } else { %>
+                                    <img class="Fgender" src="/femaleIcon.png" alt="female">
+                                <% } %>
+                            </span>
+                        </h2>
+                        <p><%= pet.description %></p>
+                    </div>
                 </div>
-            </div>
-        <% }); %>
-    </div>
+            <% }); %>
+        </div>
     <% } else { %>
         <p>No pets found.</p>
     <% } %>
-
     <script>
         function goToPetProfile(petId) {
             window.location.href = `/petProfile?id=${petId}`;
@@ -96,6 +94,38 @@
             document.querySelector('.side-menu').classList.remove('active');
             document.querySelector('.menu-overlay').classList.remove('active');
         });
+        function preloadImage(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = url;
+        });
+    }
+
+    window.onload = function() {
+        const petCards = document.querySelectorAll('.pet-card');
+        
+        petCards.forEach((petCard, index) => {
+            const petImageUrl = petCard.dataset.imageUrl; // Assume we add this data attribute to each pet card
+            
+            preloadImage(petImageUrl)
+                .then(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = petImageUrl;
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    petCard.insertBefore(imgElement, petCard.querySelector('.pet-info'));
+                })
+                .catch(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = "https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999";
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    petCard.insertBefore(imgElement, petCard.querySelector('.pet-info'));
+                });
+        });
+    };
     </script>
 </body>
 </html>
