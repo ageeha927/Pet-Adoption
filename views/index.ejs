@@ -3,98 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pet App</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <p>hi</p>
-    <form action="/display" method="POST">
-        <input type="text" name="searchBar" required>    
-        <button type="submit">Submit</button>    
-    </form>
-    <form action="/" method="get" id="petForm">
-        <input type="radio" name="animal" value="Snake" checked> Snakes
-        <input type="radio" name="animal" value="Lizard"> Lizards
-        <input type="radio" name="animal" value="Frog"> Frogs
-    </form>
-    <form action="/display" method="POST">
-        <button type="submit">View All </button>
-    </form>
-    <div id="petContainer">
-        <% pets.forEach(pet => { %>
-            <div>
-                <h2><%= pet.name %></h2>
-                <p><%= pet.description %></p>
-            </div>
-        <% }); %>
+    <!-- Menu Overlay -->
+<div class="menu-overlay"></div>
+
+<!-- Side Menu -->
+<div class="side-menu">
+    <div class="menu-header">
+        <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
+        <div class="menu-profile-info">
+            <div class="menu-profile-name">Guest User</div>
+            <div class="menu-profile-email">guest@example.com</div>
+        </div>
     </div>
     
+    <nav class="menu-items">
+        <a href="#" class="menu-item">
+            <div class="menu-item-icon">🏠</div>
+            Home
+        </a>
+        <a href="#" class="menu-item">
+            <div class="menu-item-icon">🐾</div>
+            All Pets
+        </a>
+        <a href="#" class="menu-item">
+            <div class="menu-item-icon">📝</div>
+            Upload A Pet
+        </a>
+        <a href="#" class="menu-item">
+            <div class="menu-item-icon">⚙️</div>
+            Login
+        </a>
+    </nav>
+</div>
 
-    <form action="/uploadPet" method="get">
-        <button>Upload Pet</button>
-    </form>
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-button">☰</button>
+        <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
+    </div>
 
-    <form action="/user" method="get">
-        <button>Sign Up</button>
-    </form>
-    <% if (loggedIn) { %>
-        <p>Welcome back!</p>
-        <form action="/logout" method="POST">
-            <button type="submit">Log Out</button>
+    <!-- Search -->
+    <div class="search-container">
+        <form action="/display" method="POST">
+            <input type="text" name="searchBar" placeholder="Search.." required>    
+            <button type="submit">
+                <img id="submit" src="/search.png" alt="search">
+            </button>    
         </form>
-    <% } else { %>
-        <p>Please log in or create an account.</p>
-    <% } %>
+    </div>
 
-    <!-- <form action="/display" method="GET">
-        <label for="sortBy">Sort by:</label>
-        <select name="sortBy" id="sortBy" onchange="this.form.submit()">
-            <option value="popularity">Popularity</option>
-            <option value="age">Age</option>
-            <option value="location">Location</option>
-        </select>
-    </form>
-     -->
+    <!-- Community Banner -->
+    <div class="community-banner">
+        <div class="banner-content">
+            <h2>Join our animal lovers Community</h2>
+            <form action="/user" method="get">
+                <button class="signup-button">Sign Up</button>
+            </form>
+        </div>
+        <img src="/girlWithCat.png" alt="Community" class="banner-image">
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-section">
+        <div class="section-header">
+            <h2 class="section-title">Pet Categories</h2>
+            <a href="#" class="more-link">More Category</a>
+        </div>
+        <div class="categories-grid">
+            <form action="/" method="get" id="petForm" class="radio-group">
+                <input type="radio" name="animal" value="Snake" checked> 
+                <input type="radio" name="animal" value="Lizard">
+                <input type="radio" name="animal" value="Frog">
+            </form>
+            <a href="#" class="category-item">
+                <div class="category-icon">🐍</div>
+                <span class="category-name">Snake</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon">🐸</div>
+                <span class="category-name">Frog</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon">🦎</div>
+                <span class="category-name">Lizard</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Featured Pets -->
+    <div class="pet-grid">
+        <div class="section-header">
+            <h2 class="section-title">Featured Pets</h2>
+            <a href="#" class="more-link">See all</a>
+        </div>
+        
+        <div id="petContainer">
+            <% pets.forEach(pet => { %>
+                <div class="pet-card">
+                    <img src="/api/placeholder/400/300>" alt="<%= pet.name %>">
+                    <div class="pet-info">
+                        <h2 class="pet-name">
+                            <%= pet.name %>
+                            <span class="gender-icon">
+                                <% if (pet.gender === 'Male') { %>
+                                    <img class="Mgender" src="/maleIcon.png" alt="male">
+                                <% } else { %>
+                                    <img class="Fgender" src="/femaleIcon.png" alt="female">
+                                <% } %>
+                            </span>
+                        </h2>
+                        <p><%= pet.description %></p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- Login Status -->
+    <div class="login-status">
+        <% if (loggedIn) { %>
+            <p>Welcome back!</p>
+            <form action="/logout" method="POST">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+        <% } else { %>
+            <p>Please log in or create an account.</p>
+        <% } %>
+    </div>
 
     <script>
-        // this adds a event listener to the per Form, so if its clicked it can be detected (you can also use change to only register if its a new type of animal)
         document.getElementById('petForm').addEventListener('click', async (event) => {
-            //event.target looks only at the part that was clicked (otherwise you only get the div that was clicked))
-            // you wouldn't really need matches, but it basically makes sure that the element that was clicked matches the css data, so that it avoids confusion.
-    if (event.target.matches('input[type="radio"]')) {
-        // it gives you the value of the thing that was clicked. 
-        const animalType = event.target.value;
-        // fetch sends requests, puts it as post
-        // this is the part that relates to the headers part. It makes sure that it is confirmed before running the code and sending the json. 
-        //   if (req.headers.accept && req.headers.accept.includes('application/json')) {
-        // content type tells the server the data in the body is in a json format, and accept tells the server that we want data in json format. 
-        // body sends more information to the server, and it sends the animal value to the server. 
-        try {
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({ animal: animalType })
-            });
-            // data is the json that is returned from the server controller
-            const data = await response.json();
-            
-            // this replaces the petContainer div into one that actually relates to the button that is clicked.
-            // I couldn't get it to where the div is just completely empty, without first rendering the snakes. 
-            // we need join because map makes it where everything is together in the same string, instead of being seperated, it can work wihtout .join("") though. 
-            const petContainer = document.getElementById('petContainer');
-            petContainer.innerHTML = data.pets.map(pet => `
-                <div>
-                    <h2>${pet.name}</h2>
-                    <p>${pet.description}</p>
-                </div>
-            `).join("");
-        } catch (error) {
-            console.error('Error getting pets');
-        }
-    }
-});
+            if (event.target.matches('input[type="radio"]')) {
+                const animalType = event.target.value;
+                try {
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ animal: animalType })
+                    });
+                    const data = await response.json();
+                    
+                    const petContainer = document.getElementById('petContainer');
+                    petContainer.innerHTML = data.pets.map(pet => `
+                        <div class="pet-card">
+                            <img src="/api/placeholder/400/300" alt="${pet.name}">
+                            <div class="pet-info">
+                                <h2 class="pet-name">
+                                    ${pet.name}
+                                    <span class="gender-icon">♂</span>
+                                </h2>
+                                <p>${pet.description}</p>
+                            </div>
+                        </div>
+                    `).join("");
+                } catch (error) {
+                    console.error('Error getting pets');
+                }
+            }
+        });
 
+        const menuButton = document.querySelector('.menu-button');
+        const sideMenu = document.querySelector('.side-menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = sideMenu.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        // Open/close menu
+        menuButton.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking overlay
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
     </script>
-    
-    
 </body>
 </html>

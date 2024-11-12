@@ -4,13 +4,14 @@ const connectDB = require('./db/connect');
 const pets = require("./routes/petActions");
 const port = process.env.PORT || 5001;
 const cookieParser = require('cookie-parser');
+const path = require('path');
 app.use(cookieParser('password')); 
 
 // Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(express.json());
 app.set('view engine', 'ejs'); 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // Use pets routes
