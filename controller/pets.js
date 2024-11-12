@@ -3,21 +3,58 @@ const asyncWrapper = require("../middleware/async");
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
 const loggedIn = false;
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
 
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const uploader = multer({ storage });
 
-const cloudinary = require('cloudinary').v2;
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+
+// Configure Cloudinary storage for Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "task-manager",
+        allowed_formats: ["jpg", "jpeg", "png"],
+    },
 });
+const upload = multer({ storage: storage });
 
-let maximum = 3;
-let featured = "Snake";
-let searchValue = "";
+
+
+
+  let maximum = 3;
+  let featured = "Snake";
+  let searchValue = "";
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const startPage = asyncWrapper(async (req, res) => {
     const loggedIn = req.cookies.loggedIn || false;  
@@ -67,15 +104,19 @@ const petProfile = asyncWrapper(async (req, res) => {
     res.render('petProfile', { pet, searchValue });
 });
 
-const upload = asyncWrapper(async (req, res) => {
+const uploader = asyncWrapper(async (req, res) => {
     res.render('uploadPet');
 });
 
 const addPet = asyncWrapper(async (req, res) => {
     try {
+        const imageUrl = req.file ? req.file.path : null;
+        console.log("Body:", req.body); // log form data
+        console.log("File:", req.file); // log uploaded file
         const petData = {
             ...req.body,
-            popularity: 0
+            popularity: 0,
+            image_url: imageUrl
         };
         const newPet = new Pet(petData);
         await newPet.save();
@@ -250,6 +291,6 @@ const updatePetDetails = async (req, res) => {
 
 module.exports = {
     renderEditPetForm, updatePetDetails, startPage, displayPage, searchPets,
-    featuredPets, petProfile, upload, addPet, showEmailForm, handleEmailSubmission,
-    createAccount, logAccount, logOut, dashboard, getDashboard, petSelector, deleteUser, deletePet
+    featuredPets, petProfile, uploader, addPet, showEmailForm, handleEmailSubmission,
+    createAccount, logAccount, logOut, dashboard, getDashboard, petSelector, deleteUser, deletePet, upload
 };
