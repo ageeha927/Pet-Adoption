@@ -7,6 +7,17 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 app.use(cookieParser('password')); 
 
+// const cloudinary = require('cloudinary').v2;
+
+// // Connect to cloudinary
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//     api_key: process.env.CLOUDINARY_API_KEY,
+//     api_secret: process.env.CLOUDINARY_API_SECRET,
+//   });
+
+
+
 // Middleware
 app.set('view engine', 'ejs'); 
 app.use(express.static(path.join(__dirname, 'public')));

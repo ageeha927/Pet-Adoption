@@ -3,17 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add a New Pet</title>
 </head>
 <body>
 
-    <!-- <form action="/uploadPet" method="POST">
-        <input type="text" name="searchBar" required>    
-        <button type="submit">addPet</button>    
-    </form> -->
-    <form action="/uploadPet" class="uploadPet" method="post">
-
-
+    <form action="/uploadPet" class="uploadPet" method="post" enctype="multipart/form-data">
         <h4>Add a New Pet</h4>
         
         <p>Pet Name</p>
@@ -21,9 +15,6 @@
 
         <p>Breed</p>
         <input type="text" name="breed" placeholder="Breed" required>
-
-        <p>Species</p>
-        <input type="text" name="species" placeholder="Species" required>
 
         <p>Age (in years)</p>
         <input type="number" name="age" placeholder="Age" required>
@@ -37,8 +28,8 @@
         <p>History</p>
         <textarea name="history" placeholder="History of the pet" required></textarea>
 
-        <p>Image URL</p>
-        <input type="url" name="image_url" placeholder="Image URL" required>
+        <p>Image</p>
+        <input type="file" name="image" accept="image/*" required>
 
         <p>Type</p>
         <select name="type" required>
@@ -65,5 +56,6 @@
         </select>
         <button type="submit">Add Pet</button>
     </form>
+
 </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pet</title>
+</head>
+<body>
+    <h1>Edit Pet</h1>
+
+    <!-- Form to edit pet details -->
+    <form action="/editPet/<%= pet._id %>" method="post">
+        <label for="name">Pet Name:</label>
+        <input type="text" name="name" id="name" value="<%= pet.name %>" required><br>
+
+        <label for="species">Species:</label>
+        <input type="text" name="species" id="species" value="<%= pet.species %>" required><br>
+
+        <label for="description">Description:</label><br>
+        <textarea name="description" id="description" rows="4" required><%= pet.description %></textarea><br>
+
+        <button type="submit">Update Pet</button>
+    </form>
+</body>
+</html>

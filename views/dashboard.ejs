@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <!-- Form with buttons to load Pets or Users -->
+    <form action="/getDashboard" method="post">
+        <button type="submit" name="section" value="Pets">Pet Listings</button>
+        <button type="submit" name="section" value="Users">User Listings</button>
+    </form>
+
+    <!-- Display the data if available -->
+    <% if (section === "Pets" && data) { %>
+    <h2>Pet Listings</h2>
+    <form id="petForm">
+        <input type="radio" name="animal" value="Snake" id="snakeRadio" checked> Snakes
+        <input type="radio" name="animal" value="Lizard" id="lizardRadio"> Lizards
+        <input type="radio" name="animal" value="Frog" id="frogRadio"> Frogs
+    </form>
+    <div id="petContainer">
+        <% data.forEach(pet => { %>
+        <div class="item" id="<%=pet._id%>">
+            <span><%= pet.name %></span>
+            <!-- Delete Button Form -->
+            <form action="/deletePet/<%= pet._id %>" method="POST" style="display: inline;">
+                <button type="submit">Delete</button>
+            </form>
+            <button onclick="window.location.href = '/editPet/<%= pet._id %>'">Edit</button>
+        </div>
+        <% }); %>
+    </div>
+
+    <% } else if (section === "Users" && data) { %>
+    <h2>User Listings</h2>
+    <div id="userContainer">
+        <% data.forEach(user => { %>
+        <div class="item" id="<%= user._id %>">
+            <span><%= user.name %> - <%= user.email %></span>
+            <form action="/deleteUser/<%= user._id %>" method="POST" style="display: inline;">
+                <button type="submit">Delete</button>
+            </form>            
+            <!-- <button onclick="deleteUser('<%= user._id %>')">Delete</button> -->
+        </div>
+        <% }); %>
+    </div>
+    <% } %>
+
+    <!-- Scripts Section -->
+    <script>
+        document.getElementById('petForm').addEventListener('click', async (event) => {
+            if (event.target.matches('input[type="radio"]')) {
+                const animalType = event.target.value;
+                try {
+                    const response = await fetch('/petSelector', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ animal: animalType })
+                    });
+                    const data = await response.json();
+                    const petContainer = document.getElementById('petContainer');
+                    petContainer.innerHTML = data.pets.map(pet => ` 
+                        <div class="item" id="${pet._id}">
+                            <span>${pet.name}</span>
+                            <form action="/deletePet/${pet._id}" method="POST" style="display: inline;">
+                                <button type="submit">Delete</button>
+                            </form>
+                            <button onclick="window.location.href = '/editPet/${pet._id}'">Edit</button>
+                        </div>
+                    `).join("");
+                } catch (error) {
+                    console.error('Error fetching pets');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
