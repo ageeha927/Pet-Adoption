@@ -8,44 +8,44 @@
 </head>
 <body>
     <!-- Menu Overlay -->
-<div class="menu-overlay"></div>
+    <div class="menu-overlay"></div>
 
-<!-- Side Menu -->
-<div class="side-menu">
-    <div class="menu-header">
-        <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
-        <div class="menu-profile-info">
-            <div class="menu-profile-name">Guest User</div>
-            <div class="menu-profile-email">guest@example.com</div>
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="menu-header">
+            <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
+            <div class="menu-profile-info">
+                <div class="menu-profile-name">Guest User</div>
+                <div class="menu-profile-email">guest@example.com</div>
+            </div>
         </div>
+        
+        <nav class="menu-items">
+            <a href="#" class="menu-item">
+                <div class="menu-item-icon">🏠</div>
+                Home
+            </a>
+            <a href="/display" class="menu-item">
+                <div class="menu-item-icon">🐾</div>
+                All Pets
+            </a>
+            <a href="/uploadPet" class="menu-item">
+                <div class="menu-item-icon">📝</div>
+                Upload A Pet
+            </a>
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
+        </nav>
     </div>
-    
-    <nav class="menu-items">
-        <a href="#" class="menu-item">
-            <div class="menu-item-icon">🏠</div>
-            Home
-        </a>
-        <a href="/display" class="menu-item">
-            <div class="menu-item-icon">🐾</div>
-            All Pets
-        </a>
-        <a href="/uploadPet" class="menu-item">
-            <div class="menu-item-icon">📝</div>
-            Upload A Pet
-        </a>
-        <a href="/user" class="menu-item">
-            <div class="menu-item-icon">⚙️</div>
-            Login
-        </a>
-    </nav>
-</div>
 
     <!-- Header -->
     <div class="header">
         <button class="menu-button">☰</button>
         <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
     </div>
-
+    
     <!-- Search -->
     <div class="search-container">
         <form action="/display" method="POST">
@@ -101,27 +101,30 @@
             <a href="#" class="more-link">See all</a>
         </div>
         
-        <div id="petContainer">
-            <% pets.forEach(pet => { %>
-                <div class="pet-card">
-                    <img src="/api/placeholder/400/300>" alt="<%= pet.name %>">
-                    <div class="pet-info">
-                        <h2 class="pet-name">
-                            <%= pet.name %>
-                            <span class="gender-icon">
-                                <% if (pet.gender === 'Male') { %>
-                                    <img class="Mgender" src="/maleIcon.png" alt="male">
-                                <% } else { %>
-                                    <img class="Fgender" src="/femaleIcon.png" alt="female">
-                                <% } %>
-                            </span>
-                        </h2>
-                        <p><%= pet.description %></p>
+        <% if (pets && pets.length > 0) { %>
+            <div id="petContainer">
+                <% pets.forEach(pet => { %>
+                    <div class="pet-card" onclick="goToPetProfile('<%= pet._id %>')">
+                        <img src="/api/placeholder/400/300" alt="<%= pet.name %>">
+                        <div class="pet-info">
+                            <h2 class="pet-name">
+                                <%= pet.name %>
+                                <span class="gender-icon">
+                                    <% if (pet.gender === 'Male') { %>
+                                        <img class="Mgender" src="/maleIcon.png" alt="male">
+                                    <% } else { %>
+                                        <img class="Fgender" src="/femaleIcon.png" alt="female">
+                                    <% } %>
+                                </span>
+                            </h2>
+                            <p><%= pet.description %></p>
+                        </div>
                     </div>
-                </div>
-            <% }); %>
-        </div>
-    </div>
+                <% }); %>
+            </div>
+            <% } else { %>
+                <p>No pets found.</p>
+            <% } %>
 
     <!-- Login Status -->
     <div class="login-status">
@@ -136,6 +139,9 @@
     </div>
 
     <script>
+        function goToPetProfile(petId) {
+            window.location.href = `/petProfile?id=${petId}`;
+        }
         document.getElementById('petForm').addEventListener('click', async (event) => {
             if (event.target.matches('input[type="radio"]')) {
                 const animalType = event.target.value;
@@ -189,6 +195,14 @@
                 toggleMenu();
             }
         });
+        function preloadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = url;
+            });
+        }
     </script>
 </body>
 </html>

@@ -4,26 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="petProfile.css">
 </head>
 <body>
     <form action="/display" method="POST">
-        <button name="searchBar" value="<%= searchValue %>">&#8592;</button>
+        <button class="back-button" name="searchBar" value="<%= searchValue %>">←</button>
     </form>
-    <p>Pet Profile</p>
-    <div id="petContainer">
-            <h2><%= pet.name %></h2>
-            <p><%= pet.description %></p>
-    </div>
+    
+    <div class="pet-card">
+        <div class="pet-info">
+            <h2 class="pet-name"><%= pet.name %></h2>
+            
+            <div class="pet-stats">
+                <div class="stat">
+                    <div class="stat-value"><%= pet.gender %></div>
+                    <div class="stat-label">Sex</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value"><%= pet.age %></div>
+                    <div class="stat-label">Age</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value"><%= pet.breed %></div>
+                    <div class="stat-label">Breed</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value"><%= pet.location %></div>
+                    <div class="stat-label">Location</div>
+                </div>
+            </div>
 
-    <form class="petContact">
-        <h4>Contact</h4>
-        <p>Name</p>
-          <input type="text" name="name" placeholder="John Doe">
-        <p>Email</p>
-        <input type="email" name="email" placeholder="john.doe@example.com">
-        <p>Message</p>
-        <textarea name="message" placeholder="Your message here"></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+            <p class="description"><%= pet.description %></p>
+            
+            <button class="adopt-button" onclick="toggleForm()">Want to adopt me?</button>
+
+            <div class="contact-form" id="contactForm">
+            <div class="form-content">
+                <form action="/display">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" placeholder="John Doe" class="form-input" required>
+                    
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" placeholder="john.doe@example.com" class="form-input" required>
+                    
+                    <label class="form-label">Message</label>
+                    <textarea name="message" placeholder="Your message here" class="form-input" required></textarea>
+                    
+                    <button type="submit" class="adopt-button">Send Message</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function preloadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = url;
+            });
+        }
+
+        window.onload = function() {
+            preloadImage("<%= pet.image_url %>")
+                .then(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = "<%= pet.image_url %>";
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    document.querySelector('.pet-card').insertBefore(imgElement, document.querySelector('.pet-info'));
+                })
+                .catch(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = "https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999";
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    document.querySelector('.pet-card').insertBefore(imgElement, document.querySelector('.pet-info'));
+                });
+        };
+        function toggleForm() {
+            const form = document.getElementById('contactForm');
+            form.classList.toggle('visible');
+
+          // Scroll to form if it's being shown
+            if (form.classList.contains('visible')) {
+                setTimeout(() => {
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+    </script>
 </body>
 </html>

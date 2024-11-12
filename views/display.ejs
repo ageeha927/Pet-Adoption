@@ -4,42 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <p>display pets</p>
-    <form action="/display" method="POST">
-        <input type="text" name="searchBar" value="<%= searchValue %>">
-        <button type="submit" >Submit</button>
-    </form>
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="menu-header">
+            <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
+            <div class="menu-profile-info">
+                <div class="menu-profile-name">Guest User</div>
+                <div class="menu-profile-email">guest@example.com</div>
+            </div>
+        </div>
+        
+        <nav class="menu-items">
+            <a href="#" class="menu-item">
+                <div class="menu-item-icon">🏠</div>
+                Home
+            </a>
+            <a href="/display" class="menu-item">
+                <div class="menu-item-icon">🐾</div>
+                All Pets
+            </a>
+            <a href="/uploadPet" class="menu-item">
+                <div class="menu-item-icon">📝</div>
+                Upload A Pet
+            </a>
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
+        </nav>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-button">☰</button>
+        <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+        <form action="/display" method="POST">
+            <input type="text" name="searchBar" placeholder="Search.." required>    
+            <button type="submit">
+                <img id="submit" src="/search.png" alt="search">
+            </button>    
+        </form>
+    </div>
+
     <% if (pets && pets.length > 0) { %>
-        <ul>
-            <% pets.forEach(pet => { %>
-                <div class="pet-div" id="<%= pet._id %>">
-                    <li>
-                        <h2><%= pet.name %></h2>
-                        <p><%= pet.description %></p>
-                        <img src="<%= pet.image_url%>" alt="">
-                    </li>
+    <div id="petContainer">
+        <% pets.forEach(pet => { %>
+            <div class="pet-card" onclick="goToPetProfile('<%= pet._id %>')">
+                <img src="/api/placeholder/400/300" alt="<%= pet.name %>">
+                <div class="pet-info">
+                    <h2 class="pet-name">
+                        <%= pet.name %>
+                        <span class="gender-icon">
+                            <% if (pet.gender === 'Male') { %>
+                                <img class="Mgender" src="/maleIcon.png" alt="male">
+                            <% } else { %>
+                                <img class="Fgender" src="/femaleIcon.png" alt="female">
+                            <% } %>
+                        </span>
+                    </h2>
+                    <p><%= pet.description %></p>
                 </div>
-            <% }); %>
-        </ul>
+            </div>
+        <% }); %>
+    </div>
     <% } else { %>
         <p>No pets found.</p>
     <% } %>
-    
+
     <script>
-        // adds a event listener to each div, and then each time its clicked it will redirect to the petProfile with the div id page.
-        document.querySelectorAll('.pet-div').forEach(div => {
-            div.addEventListener('click', async () => {
-                // console.log("Clicked div with ID:", div.id);
-                try {
-                    window.location.href = `/petProfile?id=${div.id}`;
-                } catch (error) {
-                    console.error('Error getting pet:', error);
-                }
-            });
+        function goToPetProfile(petId) {
+            window.location.href = `/petProfile?id=${petId}`;
+        }
+
+        // Menu toggle functionality (if needed)
+        document.querySelector('.menu-button')?.addEventListener('click', function() {
+            document.querySelector('.side-menu').classList.toggle('active');
+            document.querySelector('.menu-overlay').classList.toggle('active');
+        });
+
+        document.querySelector('.menu-overlay')?.addEventListener('click', function() {
+            document.querySelector('.side-menu').classList.remove('active');
+            document.querySelector('.menu-overlay').classList.remove('active');
         });
     </script>
-    
 </body>
 </html>

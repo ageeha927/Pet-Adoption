@@ -7,7 +7,7 @@ const petSchema = new mongoose.Schema({
     description: { type: String, required: true },
     behavior: { type: String, required: true },
     history: { type: String, required: true },
-    image_url: { type: String, required: true },  // Image URL path will be stored here
+    image_url: { type: String, default: 'https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999'},  // Image URL path will be stored here
     popularity: { type: Number, min: 0, max: 100, required: true },
     type: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female"], required: true },
