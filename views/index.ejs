@@ -15,16 +15,7 @@
         <div class="menu-header">
             <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
             <div class="menu-profile-info">
-                <% if (loggedIn) { %>
-                    <div class="menu-profile-name">
-                        Welcome Back!
-                    </div>
-                <% } else { %>
-                    <div class="menu-profile-name">
-                        Welcome!
-                    </div>
-                <% } %>
-                
+                <div class="menu-profile-name">Username</div>
                 <div class="menu-profile-email">
                     <% if (email) { %>
                         <div class="menu-profile-email">
@@ -50,19 +41,10 @@
                 <div class="menu-item-icon">📝</div>
                 Upload A Pet
             </a>
-            <% if (!loggedIn) { %>
-                <a href="/user" class="menu-item">
-                    <div class="menu-item-icon">⚙️</div>
-                    Login
-                </a>
-            <% } %>
-            <% if (loggedInAdmin) { %>
-                <a href="/dashboard" class="menu-item">
-                    <div class="menu-item-icon">🛠️</div>
-                    Dashboard
-                </a>
-            <% } %>
-            
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
         </nav>
     </div>
 

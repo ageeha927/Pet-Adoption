@@ -90,10 +90,6 @@ input:focus {
     transition: background-color 0.2s;
 }
 
-button:hover {
-    background-color: #2563EB;
-}
-
 button.secondary {
     background-color: #E5E7EB;
     color: #374151;

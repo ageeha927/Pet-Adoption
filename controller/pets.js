@@ -8,11 +8,6 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 
 
-let maximum = 3;
-let featured = "Snake";
-let searchValue = "";
-
-
 // Configure Cloudinary storage for Multer
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -23,6 +18,14 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
+<<<<<<< HEAD
+=======
+
+let maximum = 3;
+let featured = "Snake";
+let searchValue = "";
+
+>>>>>>> 86b822ce75b61290f1445bd7595559cf173d11d5
 const startPage = asyncWrapper(async (req, res) => {
     try{
         // Gets the cookies to see if user is logged in, if their an admin, and then checks the email and saves it.
