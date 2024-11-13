@@ -1,0 +1,110 @@
+body {
+    background: #ffffff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.uploadPet {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+h4 {
+    font-size: 24px;
+    color: #000000;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+h4::after {
+    font-size: 18px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f8f8f8;
+    margin-top: 4px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #666;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.upload-icon::before {
+    content: "↑";
+    font-size: 24px;
+    color: #666;
+}
+
+.file-upload span {
+    font-size: 14px;
+    color: #666;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+button {
+    background: #3579BE;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+@media (min-width: 768px) {
+    body {
+        padding: 40px;
+    }
+    
+    .uploadPet {
+        padding: 24px;
+    }
+}

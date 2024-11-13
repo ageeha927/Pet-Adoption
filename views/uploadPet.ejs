@@ -4,58 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add a New Pet</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="uploadPet.css">
 </head>
 <body>
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
 
-    <form action="/uploadPet" class="uploadPet" method="post" enctype="multipart/form-data">
-        <h4>Add a New Pet</h4>
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="menu-header">
+            <div class="menu-profile-info">
+                <div class="menu-profile-name"></div>
+                <div class="menu-profile-email">
+                        <div class="menu-profile-email"></div>
+                </div>
+            </div>
+        </div>
         
-        <p>Pet Name</p>
-        <input type="text" name="name" placeholder="Pet Name" required>
+        <nav class="menu-items">
+            <a href="/" class="menu-item">
+                <div class="menu-item-icon">🏠</div>
+                Home
+            </a>
+            <a href="/display" class="menu-item">
+                <div class="menu-item-icon">🐾</div>
+                All Pets
+            </a>
+            <a href="/uploadPet" class="menu-item">
+                <div class="menu-item-icon">📝</div>
+                Upload A Pet
+            </a>
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
+        </nav>
+    </div>
 
-        <p>Breed</p>
-        <input type="text" name="breed" placeholder="Breed" required>
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-button">☰</button>
+        <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
+    </div>
+    <form action="/uploadPet" class="uploadPet" method="post" enctype="multipart/form-data">
+        <h4>Upload a Pet</h4>
+        
+        <div>
+            <label>Name</label>
+            <input type="text" name="name" required>
+        </div>
 
-        <p>Age (in years)</p>
-        <input type="number" name="age" placeholder="Age" required>
+        <div>
+            <label>Breed</label>
+            <input type="text" name="breed" required>
+        </div>
 
-        <p>Description</p>
-        <textarea name="description" placeholder="Description of the pet" required></textarea>
+        <div>
+            <label>Age</label>
+            <input type="number" name="age" required>
+        </div>
 
-        <p>Behavior</p>
-        <textarea name="behavior" placeholder="Behavior description" required></textarea>
+        <div>
+            <label>Description</label>
+            <textarea name="description" required></textarea>
+        </div>
 
-        <p>History</p>
-        <textarea name="history" placeholder="History of the pet" required></textarea>
+        <div>
+            <label>Behavior</label>
+            <textarea name="behavior" required></textarea>
+        </div>
 
-        <p>Image</p>
-        <input type="file" name="image" accept="image/*" required>
+        <div>
+            <label>History</label>
+            <textarea name="history" required></textarea>
+        </div>
 
-        <p>Type</p>
-        <select name="type" required>
-            <option value="Snake">Snake</option>
-            <option value="Lizard">Lizard</option>
-            <option value="Frog">Frog</option>
-        </select>
+        <div>
+            <label>Type</label>
+            <select name="type" required>
+                <option value="Snake">Snake</option>
+                <option value="Lizard">Lizard</option>
+                <option value="Frog">Frog</option>
+            </select>
+        </div>
 
-        <p>Gender</p>
-        <select name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
+        <div>
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
 
-        <p>Location</p>
-        <select name="location" required>
-            <option value="North West">North West</option>
-            <option value="West">West</option>
-            <option value="South West">South West</option>
-            <option value="Mid West">Mid West</option>
-            <option value="South East">South East</option>
-            <option value="Mid Atlantic">Mid Atlantic</option>
-            <option value="North East">North East</option>
-        </select>
-        <button type="submit">Add Pet</button>
+        <div>
+            <label>Location</label>
+            <select name="location" required>
+                <option value="North West">North West</option>
+                <option value="West">West</option>
+                <option value="South West">South West</option>
+                <option value="Mid West">Mid West</option>
+                <option value="South East">South East</option>
+                <option value="Mid Atlantic">Mid Atlantic</option>
+                <option value="North East">North East</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="image-upload" class="file-upload">
+                <div class="upload-icon"></div>
+                <span>Image Upload</span>
+            </label>
+            <input id="image-upload" type="file" name="image" accept="image/*" required>
+        </div>
+
+        <button type="submit">Submit</button>
     </form>
+    <script>
+        const menuButton = document.querySelector('.menu-button');
+        const sideMenu = document.querySelector('.side-menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
 
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = sideMenu.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        // Open/close menu
+        menuButton.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking overlay
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
 </body>
 </html>

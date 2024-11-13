@@ -4,57 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Pet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f2f2f7;
+            color: #000;
+            line-height: 1.4;
+            padding: 16px;
+        }
+
+        .header {
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            background-color: #fff;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            border: none;
+            font-size: 17px;
+            background: transparent;
+            outline: none;
+            padding: 4px 0;
+        }
+
+        textarea {
+            resize: none;
+            min-height: 80px;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007AFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center;
+            background-size: 12px;
+            padding-right: 24px;
+        }
+
+        .image-upload {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .image-upload-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #007AFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px auto;
+            font-size: 24px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            color: #007AFF;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #007AFF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            width: 100%;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Edit Pet</h1>
+    <div class="header">
+        <span>🐾</span>
+        <h1>Edit Pet</h1>
+    </div>
 
-    <!-- Form to edit pet details, added enctype for file uploads -->
     <form action="/editPet/<%= pet._id %>" method="post" enctype="multipart/form-data">
-        <label for="name">Pet Name:</label>
-        <input type="text" name="name" id="name" value="<%= pet.name %>" required><br>
+        <div class="form-group">
+            <label for="name">Pet Name</label>
+            <input type="text" name="name" id="name" value="<%= pet.name %>" required>
+        </div>
 
-        <label for="breed">Breed:</label>
-        <input type="text" name="breed" id="breed" value="<%= pet.breed %>" required><br>
+        <div class="form-group">
+            <label for="breed">Breed</label>
+            <input type="text" name="breed" id="breed" value="<%= pet.breed %>" required>
+        </div>
 
-        <label for="age">Age:</label>
-        <input type="number" name="age" id="age" value="<%= pet.age %>" required><br>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" value="<%= pet.age %>" required>
+        </div>
 
-        <label for="description">Description:</label><br>
-        <textarea name="description" id="description" rows="4" required><%= pet.description %></textarea><br>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" required><%= pet.description %></textarea>
+        </div>
 
-        <label for="behavior">Behavior:</label><br>
-        <textarea name="behavior" id="behavior" rows="4" required><%= pet.behavior %></textarea><br>
+        <div class="form-group">
+            <label for="behavior">Behavior</label>
+            <textarea name="behavior" id="behavior" required><%= pet.behavior %></textarea>
+        </div>
 
-        <label for="history">History:</label><br>
-        <textarea name="history" id="history" rows="4" required><%= pet.history %></textarea><br>
+        <div class="form-group">
+            <label for="history">History</label>
+            <textarea name="history" id="history" required><%= pet.history %></textarea>
+        </div>
 
-        <!-- Image upload input -->
-        <label for="image">Image:</label>
-        <input type="file" name="image" accept="image/*"><br>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select name="type" required>
+                <option value="Snake" <%= pet.type === 'Snake' ? 'selected' : '' %>>Snake</option>
+                <option value="Lizard" <%= pet.type === 'Lizard' ? 'selected' : '' %>>Lizard</option>
+                <option value="Frog" <%= pet.type === 'Frog' ? 'selected' : '' %>>Frog</option>
+            </select>
+        </div>
 
-        <label for="type">Type:</label>
-        <select name="type" required>
-            <option value="Snake" <%= pet.type === 'Snake' ? 'selected' : '' %>>Snake</option>
-            <option value="Lizard" <%= pet.type === 'Lizard' ? 'selected' : '' %>>Lizard</option>
-            <option value="Frog" <%= pet.type === 'Frog' ? 'selected' : '' %>>Frog</option>
-        </select><br>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select name="gender" required>
+                <option value="Male" <%= pet.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                <option value="Female" <%= pet.gender === 'Female' ? 'selected' : '' %>>Female</option>
+            </select>
+        </div>
 
-        <label for="gender">Gender:</label>
-        <select name="gender" required>
-            <option value="Male" <%= pet.gender === 'Male' ? 'selected' : '' %>>Male</option>
-            <option value="Female" <%= pet.gender === 'Female' ? 'selected' : '' %>>Female</option>
-        </select><br>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <select name="location" required>
+                <option value="North West" <%= pet.location === 'North West' ? 'selected' : '' %>>North West</option>
+                <option value="West" <%= pet.location === 'West' ? 'selected' : '' %>>West</option>
+                <option value="South West" <%= pet.location === 'South West' ? 'selected' : '' %>>South West</option>
+                <option value="Mid West" <%= pet.location === 'Mid West' ? 'selected' : '' %>>Mid West</option>
+                <option value="South East" <%= pet.location === 'South East' ? 'selected' : '' %>>South East</option>
+                <option value="Mid Atlantic" <%= pet.location === 'Mid Atlantic' ? 'selected' : '' %>>Mid Atlantic</option>
+                <option value="North East" <%= pet.location === 'North East' ? 'selected' : '' %>>North East</option>
+            </select>
+        </div>
 
-        <label for="location">Location:</label>
-        <select name="location" required>
-            <option value="North West" <%= pet.location === 'North West' ? 'selected' : '' %>>North West</option>
-            <option value="West" <%= pet.location === 'West' ? 'selected' : '' %>>West</option>
-            <option value="South West" <%= pet.location === 'South West' ? 'selected' : '' %>>South West</option>
-            <option value="Mid West" <%= pet.location === 'Mid West' ? 'selected' : '' %>>Mid West</option>
-            <option value="South East" <%= pet.location === 'South East' ? 'selected' : '' %>>South East</option>
-            <option value="Mid Atlantic" <%= pet.location === 'Mid Atlantic' ? 'selected' : '' %>>Mid Atlantic</option>
-            <option value="North East" <%= pet.location === 'North East' ? 'selected' : '' %>>North East</option>
-        </select><br>
+        <div class="image-upload">
+            <div class="image-upload-icon">↑</div>
+            <label for="image" class="file-label">Choose Image</label>
+            <input type="file" name="image" id="image" accept="image/*">
+        </div>
 
         <button type="submit">Update Pet</button>
     </form>

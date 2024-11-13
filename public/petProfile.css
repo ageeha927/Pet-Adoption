@@ -85,7 +85,7 @@ body {
 }
 
 .adopt-button {
-    background-color: #007AFF;
+    background-color: #3579BE;
     color: white;
     padding: 16px;
     border-radius: 12px;
@@ -99,7 +99,7 @@ body {
 }
 
 .adopt-button:active {
-    background-color: #0066CC;
+    background-color: #6fa2d5;
 }
 
 .contact-form {
@@ -141,7 +141,7 @@ body {
 
 .form-input:focus {
     outline: none;
-    border-color: #007AFF;
+    border-color: #3579BE;
     background-color: #fff;
 }
 

@@ -4,40 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="user.css">
 </head>
 <body>
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="menu-header">
+            <div class="menu-profile-info">
+                <div class="menu-profile-name"></div>
+                <div class="menu-profile-email"></div>
+            </div>
+        </div>
+        
+        <nav class="menu-items">
+            <a href="/" class="menu-item">
+                <div class="menu-item-icon">🏠</div>
+                Home
+            </a>
+            <a href="/display" class="menu-item">
+                <div class="menu-item-icon">🐾</div>
+                All Pets
+            </a>
+            <a href="/uploadPet" class="menu-item">
+                <div class="menu-item-icon">📝</div>
+                Upload A Pet
+            </a>
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
+        </nav>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-button">☰</button>
+        <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
+    </div>
+
     <div id="userContainer">
+        <h1 class="welcome-text">Thank you for choosing<br>Adopted Heart</h1>
+        
+        <div class="logo-container">
+            <img src="https://preview.redd.it/5fb7d6r51yh61.jpg?width=640&crop=smart&auto=webp&s=d318591b433ab1e365841357818324869d62d38f" alt="Adopted Heart Logo">
+        </div>
+
         <!-- Check if email has been submitted; if not, ask for email -->
         <% if (!emailSubmitted) { %>
             <form action="/submitEmail" method="post">
-                <h2>Enter Email</h2>
-                <label for="email">Email:</label>
-                <input type="email" name="email" required>
-                <button type="submit">Submit</button>
+                <div class="form-group">
+                    <label for="email">Email Address*</label>
+                    <input type="email" name="email" required>
+                </div>
+                <button type="submit" id="Login-button">Continue</button>
             </form>
         
         <!-- If email is submitted and exists, show login form with email pre-filled -->
         <% } else if (emailExists) { %>
             <form action="/login" method="post">
-                <h2>Welcome back! Please log in.</h2>
-                <label for="email">Email:</label>
-                <input type="email" name="email" value="<%= email %>" readonly>
-                <label for="password">Password:</label>
-                <input type="password" name="password" required>
-                <button type="submit">Login</button>
+                <div class="form-group">
+                    <label for="email">Email Address*</label>
+                    <input type="email" name="email" value="<%= email %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password*</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button id="Login-button" type="submit">Login</button>
             </form>
         
         <!-- If email is submitted and does not exist, show signup form with email pre-filled -->
         <% } else { %>
             <form action="/signup" method="post">
-                <h2>Email not found. Please sign up.</h2>
-                <label for="email">Email:</label>
-                <input type="email" name="email" value="<%= email %>" readonly>
-                <label for="password">Create Password:</label>
-                <input type="password" name="password" required>
-                <button type='submit'>Sign Up</button>
+                <div class="form-group">
+                    <label for="email">Email Address*</label>
+                    <input type="email" name="email" value="<%= email %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password*</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" id="Login-button">Create Account</button>
+                <div class="divider">Already have an account?</div>
+                <button id="Login-button" type="button" class="secondary" onclick="window.location.href='/user?'">Login</button>
             </form>
         <% } %>
     </div>
+
+    <script>
+        const menuButton = document.querySelector('.menu-button');
+        const sideMenu = document.querySelector('.side-menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = sideMenu.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        menuButton.addEventListener('click', toggleMenu);
+        menuOverlay.addEventListener('click', toggleMenu);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
 </body>
 </html>
