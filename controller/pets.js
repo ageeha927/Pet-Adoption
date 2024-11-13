@@ -23,6 +23,17 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
+<<<<<<< Updated upstream
+=======
+
+
+
+  let maximum = 3;
+  let featured = "Snake";
+  let searchValue = "";
+  
+
+>>>>>>> Stashed changes
 const startPage = asyncWrapper(async (req, res) => {
     try{
         // Gets the cookies to see if user is logged in, if their an admin, and then checks the email and saves it.
