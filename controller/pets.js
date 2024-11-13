@@ -28,7 +28,7 @@ const startPage = asyncWrapper(async (req, res) => {
         // Gets the cookies to see if user is logged in, if their an admin, and then checks the email and saves it.
         const loggedIn = req.cookies.loggedIn || false;  
         const loggedInAdmin = req.cookies.administrator; 
-        const email = req.cookies.email || "undefined@undefined.com"
+        const email = req.cookies.email || "user@Gmail.com"
         const pet = await Pet.find({});
         res.render('index', { 
             pet: pet.slice(0, maximum), loggedIn, loggedInAdmin, email
