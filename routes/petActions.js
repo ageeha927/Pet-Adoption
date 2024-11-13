@@ -23,8 +23,11 @@ const {
     upload
 } = require('../controller/pets');
 
-router.post('/', featuredPets); 
 router.get('/', startPage);
+router.post('/', featuredPets); 
+
+
+
 
 router.post("/display", searchPets);
 router.get("/display", displayPage);

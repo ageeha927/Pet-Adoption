@@ -99,11 +99,11 @@
             <h2 class="section-title">Pet Categories</h2>
         </div>
         <div class="categories-grid">
-            <form action="/" method="get" id="petForm" class="radio-group">
+            <!-- <form action="/" method="get" id="petForm" class="radio-group">
                 <input type="radio" name="animal" value="Snake" id="snakeRadio" checked>
                 <input type="radio" name="animal" value="Lizard" id="lizardRadio">
                 <input type="radio" name="animal" value="Frog" id="frogRadio">
-            </form>
+            </form> -->
             <a href="#" class="category-item">
                 <div class="category-icon">🐍</div>
                 <span class="category-name">Snake</span>
@@ -162,6 +162,16 @@
         <% } %>
     </div>
 
+
+
+    <form action="/" method="get" id="petForm">
+        <input type="radio" name="animal" value="Snake" checked> Snakes
+        <input type="radio" name="animal" value="Lizard"> Lizards
+        <input type="radio" name="animal" value="Frog"> Frogs
+        <!-- <input type="submit"> -->
+    </form>
+
+
     <script>
         function goToPetProfile(petId) {
             window.location.href = `/petProfile?id=${petId}`;
@@ -203,40 +213,6 @@
         }
     }
 });
-
-document.getElementById('petForm').addEventListener('change', async (event) => {
-        if (event.target.matches('input[type="radio"]')) {
-            const animalType = event.target.value;
-            try {
-                const response = await fetch('/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ animal: animalType })
-                });
-                
-                const data = await response.json();
-                const petContainer = document.getElementById('petContainer');
-                
-                petContainer.innerHTML = data.pets.map(pet => `
-                    <div class="pet-card" onclick="goToPetProfile('${pet._id}')" data-image-url="${pet.image_url || 'https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999'}">
-                        <div class="pet-info">
-                            <h2 class="pet-name">
-                                ${pet.name}
-                                <span class="gender-icon">${pet.gender === 'Male' ? '♂' : '♀'}</span>
-                            </h2>
-                            <p>${pet.description}</p>
-                        </div>
-                    </div>
-                `).join("");
-
-                // Reload images for new pets after fetching
-                reloadPetImages();
-            } catch (error) {
-                console.error('Error getting pets:', error);
-            }
-        }
-    });
-
         const menuButton = document.querySelector('.menu-button');
         const sideMenu = document.querySelector('.side-menu');
         const menuOverlay = document.querySelector('.menu-overlay');

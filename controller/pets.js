@@ -23,17 +23,6 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-<<<<<<< Updated upstream
-=======
-
-
-
-  let maximum = 3;
-  let featured = "Snake";
-  let searchValue = "";
-  
-
->>>>>>> Stashed changes
 const startPage = asyncWrapper(async (req, res) => {
     try{
         // Gets the cookies to see if user is logged in, if their an admin, and then checks the email and saves it.
@@ -67,6 +56,8 @@ const featuredPets = asyncWrapper(async (req, res) => {
     try {
         // sorts them through thier popularity levels.
         featured = req.body.animal;
+        console.log(featured)
+
         const pet = await Pet.find({ type: featured }).sort({ popularity: -1 });
         if (req.headers.accept && req.headers.accept.includes('application/json')) {
             return res.json({ pet: pet.slice(0, maximum) });
