@@ -15,16 +15,7 @@
         <div class="menu-header">
             <img src="/noProfilePhoto.png" alt="Profile" class="menu-profile-image">
             <div class="menu-profile-info">
-                <% if (loggedIn) { %>
-                    <div class="menu-profile-name">
-                        Welcome Back!
-                    </div>
-                <% } else { %>
-                    <div class="menu-profile-name">
-                        Welcome!
-                    </div>
-                <% } %>
-                
+                <div class="menu-profile-name">Username</div>
                 <div class="menu-profile-email">
                     <% if (email) { %>
                         <div class="menu-profile-email">
@@ -51,16 +42,8 @@
                 Upload A Pet
             </a>
             <a href="/user" class="menu-item">
-                <div class="menu-item-icon">💻</div>
+                <div class="menu-item-icon">⚙️</div>
                 Login
-            </a>
-            <a href="/dashboard" class="menu-item">
-                <% if (loggedInAdmin) { %>
-                    <div class="menu-item-icon">⚙️</div>
-                    Dashboard
-                <% } else { %>
-                    <p></p>
-                <% } %>
             </a>
         </nav>
     </div>
@@ -85,19 +68,8 @@
     <div class="community-banner">
         <div class="banner-content">
             <h2>Join our animal lovers Community</h2>
-                <% if (loggedInAdmin) { %>
-                    <form action="/dashboard" method="get">
-                        <button class="signup-button">Dashboard</button>
-                    </form>
-                <% } else if (loggedIn) { %>
-                    <form action="/display" method="get">
-                        <button class="signup-button">All Pets</button>
-                    </form>
-                <% } else{ %>
-                    <form action="/user" method="get">
-                        <button class="signup-button">Sign Up</button>
-                    </form>
-                <% } %>
+            <form action="/user" method="get">
+                <button class="signup-button">Sign Up</button>
             </form>
         </div>
         <img src="/girlWithCat.png" alt="Community" class="banner-image">
@@ -178,10 +150,10 @@
         }
 
                 // this adds a event listener to the per Form, so if its clicked it can be detected (you can also use change to only register if its a new type of animal)
-    document.getElementById('petForm').addEventListener('click', async (event) => {
+        document.getElementById('petForm').addEventListener('click', async (event) => {
             //event.target looks only at the part that was clicked (otherwise you only get the div that was clicked))
             // you wouldn't really need matches, but it basically makes sure that the element that was clicked matches the css data, so that it avoids confusion.
-        if (event.target.matches('input[type="radio"]')) {
+    if (event.target.matches('input[type="radio"]')) {
         // it gives you the value of the thing that was clicked. 
         const animalType = event.target.value;
         // fetch sends requests, puts it as post
@@ -213,6 +185,39 @@
         }
     }
 });
+
+document.getElementById('petForm').addEventListener('change', async (event) => {
+        if (event.target.matches('input[type="radio"]')) {
+            const animalType = event.target.value;
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ animal: animalType })
+                });
+                
+                const data = await response.json();
+                const petContainer = document.getElementById('petContainer');
+                
+                petContainer.innerHTML = data.pets.map(pet => `
+                    <div class="pet-card" onclick="goToPetProfile('${pet._id}')" data-image-url="${pet.image_url || 'https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999'}">
+                        <div class="pet-info">
+                            <h2 class="pet-name">
+                                ${pet.name}
+                                <span class="gender-icon">${pet.gender === 'Male' ? '♂' : '♀'}</span>
+                            </h2>
+                            <p>${pet.description}</p>
+                        </div>
+                    </div>
+                `).join("");
+
+                // Reload images for new pets after fetching
+                reloadPetImages();
+            } catch (error) {
+                console.error('Error getting pets:', error);
+            }
+        }
+    });
 
         const menuButton = document.querySelector('.menu-button');
         const sideMenu = document.querySelector('.side-menu');
