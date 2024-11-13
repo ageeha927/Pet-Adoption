@@ -8,16 +8,53 @@
 <body>
     <h1>Edit Pet</h1>
 
-    <!-- Form to edit pet details -->
-    <form action="/editPet/<%= pet._id %>" method="post">
+    <!-- Form to edit pet details, added enctype for file uploads -->
+    <form action="/editPet/<%= pet._id %>" method="post" enctype="multipart/form-data">
         <label for="name">Pet Name:</label>
         <input type="text" name="name" id="name" value="<%= pet.name %>" required><br>
 
-        <label for="species">Species:</label>
-        <input type="text" name="species" id="species" value="<%= pet.species %>" required><br>
+        <label for="breed">Breed:</label>
+        <input type="text" name="breed" id="breed" value="<%= pet.breed %>" required><br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" id="age" value="<%= pet.age %>" required><br>
 
         <label for="description">Description:</label><br>
         <textarea name="description" id="description" rows="4" required><%= pet.description %></textarea><br>
+
+        <label for="behavior">Behavior:</label><br>
+        <textarea name="behavior" id="behavior" rows="4" required><%= pet.behavior %></textarea><br>
+
+        <label for="history">History:</label><br>
+        <textarea name="history" id="history" rows="4" required><%= pet.history %></textarea><br>
+
+        <!-- Image upload input -->
+        <label for="image">Image:</label>
+        <input type="file" name="image" accept="image/*"><br>
+
+        <label for="type">Type:</label>
+        <select name="type" required>
+            <option value="Snake" <%= pet.type === 'Snake' ? 'selected' : '' %>>Snake</option>
+            <option value="Lizard" <%= pet.type === 'Lizard' ? 'selected' : '' %>>Lizard</option>
+            <option value="Frog" <%= pet.type === 'Frog' ? 'selected' : '' %>>Frog</option>
+        </select><br>
+
+        <label for="gender">Gender:</label>
+        <select name="gender" required>
+            <option value="Male" <%= pet.gender === 'Male' ? 'selected' : '' %>>Male</option>
+            <option value="Female" <%= pet.gender === 'Female' ? 'selected' : '' %>>Female</option>
+        </select><br>
+
+        <label for="location">Location:</label>
+        <select name="location" required>
+            <option value="North West" <%= pet.location === 'North West' ? 'selected' : '' %>>North West</option>
+            <option value="West" <%= pet.location === 'West' ? 'selected' : '' %>>West</option>
+            <option value="South West" <%= pet.location === 'South West' ? 'selected' : '' %>>South West</option>
+            <option value="Mid West" <%= pet.location === 'Mid West' ? 'selected' : '' %>>Mid West</option>
+            <option value="South East" <%= pet.location === 'South East' ? 'selected' : '' %>>South East</option>
+            <option value="Mid Atlantic" <%= pet.location === 'Mid Atlantic' ? 'selected' : '' %>>Mid Atlantic</option>
+            <option value="North East" <%= pet.location === 'North East' ? 'selected' : '' %>>North East</option>
+        </select><br>
 
         <button type="submit">Update Pet</button>
     </form>

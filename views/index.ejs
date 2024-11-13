@@ -149,6 +149,51 @@
         function goToPetProfile(petId) {
             window.location.href = `/petProfile?id=${petId}`;
         }
+
+                // this adds a event listener to the per Form, so if its clicked it can be detected (you can also use change to only register if its a new type of animal)
+        document.getElementById('petForm').addEventListener('click', async (event) => {
+            //event.target looks only at the part that was clicked (otherwise you only get the div that was clicked))
+            // you wouldn't really need matches, but it basically makes sure that the element that was clicked matches the css data, so that it avoids confusion.
+    if (event.target.matches('input[type="radio"]')) {
+        // it gives you the value of the thing that was clicked. 
+        const animalType = event.target.value;
+        // fetch sends requests, puts it as post
+        // this is the part that relates to the headers part. It makes sure that it is confirmed before running the code and sending the json. 
+        //   if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        // content type tells the server the data in the body is in a json format, and accept tells the server that we want data in json format. 
+        // body sends more information to the server, and it sends the animal value to the server. 
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ animal: animalType })
+            });
+            // data is the json that is returned from the server controller
+            const data = await response.json();
+            
+            // this replaces the petContainer div into one that actually relates to the button that is clicked.
+            // I couldn't get it to where the div is just completely empty, without first rendering the snakes. 
+            // we need join because map makes it where everything is together in the same string, instead of being seperated, it can work wihtout .join("") though. 
+            const petContainer = document.getElementById('petContainer');
+            petContainer.innerHTML = data.pets.map(pet => `
+                <div>
+                    <h2>${pet.name}</h2>
+                    <p>${pet.description}</p>
+                </div>
+            `).join("");
+        } catch (error) {
+            console.error('Error getting pets');
+        }
+    }
+});
+
+
+
+
+
+
+
+
         document.getElementById('petForm').addEventListener('click', async (event) => {
             if (event.target.matches('input[type="radio"]')) {
                 const animalType = event.target.value;

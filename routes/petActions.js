@@ -52,7 +52,7 @@ router.delete('/deletePet/:petId', deletePet);
 
 
 router.get("/editPet/:petId", renderEditPetForm); 
-router.post("/editPet/:petId", updatePetDetails); 
+router.post('/editPet/:petId', upload.single('image'), updatePetDetails);
 
 
 module.exports = router;
