@@ -4,53 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <div class="menu-header">
+            <div class="menu-profile-info">
+                <div class="menu-profile-name"></div>
+                <div class="menu-profile-email">
+                        <div class="menu-profile-email"></div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="menu-items">
+            <a href="/" class="menu-item">
+                <div class="menu-item-icon">🏠</div>
+                Home
+            </a>
+            <a href="/display" class="menu-item">
+                <div class="menu-item-icon">🐾</div>
+                All Pets
+            </a>
+            <a href="/uploadPet" class="menu-item">
+                <div class="menu-item-icon">📝</div>
+                Upload A Pet
+            </a>
+            <a href="/user" class="menu-item">
+                <div class="menu-item-icon">⚙️</div>
+                Login
+            </a>
+        </nav>
+    </div>
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-button">☰</button>
+        <img src="/noProfilePhoto.png" alt="profile" class="profile-image">
+    </div>
+
     <h1>Dashboard</h1>
 
-    <!-- Form with buttons to load Pets or Users -->
-    <form action="/getDashboard" method="post">
+    <!-- Original form with styled buttons -->
+    <form action="/getDashboard" method="post" class="section-toggle">
         <button type="submit" name="section" value="Pets">Pet Listings</button>
         <button type="submit" name="section" value="Users">User Listings</button>
     </form>
 
     <!-- Display the data if available -->
     <% if (section === "Pets" && data) { %>
-    <h2>Pet Listings</h2>
-    <form id="petForm">
-        <input type="radio" name="animal" value="Snake" id="snakeRadio" checked> Snakes
-        <input type="radio" name="animal" value="Lizard" id="lizardRadio"> Lizards
-        <input type="radio" name="animal" value="Frog" id="frogRadio"> Frogs
-    </form>
-    <div id="petContainer">
-        <% data.forEach(pet => { %>
-        <div class="item" id="<%=pet._id%>">
-            <span><%= pet.name %></span>
-            <!-- Delete Button Form -->
-            <form action="/deletePet/<%= pet._id %>" method="POST" style="display: inline;">
-                <button type="submit">Delete</button>
-            </form>
-            <button onclick="window.location.href = '/editPet/<%= pet._id %>'">Edit</button>
+        <h2>Pet Listings</h2>
+        <form id="petForm" class="radio-group">
+            <label>
+                <input type="radio" name="animal" value="Snake" id="snakeRadio" checked> Snakes
+            </label>
+            <label>
+                <input type="radio" name="animal" value="Lizard" id="lizardRadio"> Lizards
+            </label>
+            <label>
+                <input type="radio" name="animal" value="Frog" id="frogRadio"> Frogs
+            </label>
+        </form>
+        <div id="petContainer">
+            <% data.forEach(pet => { %>
+                <div class="item" id="<%=pet._id%>">
+                    <span><%= pet.name %></span>
+                    <div>
+                        <form action="/deletePet/<%= pet._id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                        <button onclick="window.location.href = '/editPet/<%= pet._id %>'" class="btn btn-edit">Edit</button>
+                    </div>
+                </div>
+            <% }); %>
         </div>
-        <% }); %>
-    </div>
 
     <% } else if (section === "Users" && data) { %>
-    <h2>User Listings</h2>
-    <div id="userContainer">
-        <% data.forEach(user => { %>
-        <div class="item" id="<%= user._id %>">
-            <span><%= user.name %> - <%= user.email %></span>
-            <form action="/deleteUser/<%= user._id %>" method="POST" style="display: inline;">
-                <button type="submit">Delete</button>
-            </form>            
-            <!-- <button onclick="deleteUser('<%= user._id %>')">Delete</button> -->
+        <h2>User Listings</h2>
+        <div id="userContainer">
+            <% data.forEach(user => { %>
+                <div class="item" id="<%= user._id %>">
+                    <span><%= user.name %> - <%= user.email %></span>
+                    <form action="/deleteUser/<%= user._id %>" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </div>
+            <% }); %>
         </div>
-        <% }); %>
-    </div>
     <% } %>
 
-    <!-- Scripts Section -->
+    <!-- Original Scripts Section -->
     <script>
         document.getElementById('petForm').addEventListener('click', async (event) => {
             if (event.target.matches('input[type="radio"]')) {
@@ -63,13 +110,15 @@
                     });
                     const data = await response.json();
                     const petContainer = document.getElementById('petContainer');
-                    petContainer.innerHTML = data.pets.map(pet => ` 
+                    petContainer.innerHTML = data.pets.map(pet => `
                         <div class="item" id="${pet._id}">
                             <span>${pet.name}</span>
-                            <form action="/deletePet/${pet._id}" method="POST" style="display: inline;">
-                                <button type="submit">Delete</button>
-                            </form>
-                            <button onclick="window.location.href = '/editPet/${pet._id}'">Edit</button>
+                            <div>
+                                <form action="/deletePet/${pet._id}" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-delete">Delete</button>
+                                </form>
+                                <button onclick="window.location.href = '/editPet/${pet._id}'" class="btn btn-edit">Edit</button>
+                            </div>
                         </div>
                     `).join("");
                 } catch (error) {
@@ -77,6 +126,48 @@
                 }
             }
         });
+        // Menu toggle functionality (if needed)
+        document.querySelector('.menu-button')?.addEventListener('click', function() {
+            document.querySelector('.side-menu').classList.toggle('active');
+            document.querySelector('.menu-overlay').classList.toggle('active');
+        });
+
+        document.querySelector('.menu-overlay')?.addEventListener('click', function() {
+            document.querySelector('.side-menu').classList.remove('active');
+            document.querySelector('.menu-overlay').classList.remove('active');
+        });
+        function preloadImage(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = url;
+        });
+    }
+
+    window.onload = function() {
+        const petCards = document.querySelectorAll('.pet-card');
+        
+        petCards.forEach((petCard, index) => {
+            const petImageUrl = petCard.dataset.imageUrl; // Assume we add this data attribute to each pet card
+            
+            preloadImage(petImageUrl)
+                .then(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = petImageUrl;
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    petCard.insertBefore(imgElement, petCard.querySelector('.pet-info'));
+                })
+                .catch(() => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = "https://lovedrinks.com/cdn-cgi/imagedelivery/lPz29URYX3W9lk2JWbxsjA/lovedrinks.com/2023/08/No-Image-Placeholder.svg_.png/w=9999";
+                    imgElement.alt = "Pet photo";
+                    imgElement.className = "pet-image";
+                    petCard.insertBefore(imgElement, petCard.querySelector('.pet-info'));
+                });
+        });
+    };
     </script>
 </body>
 </html>
