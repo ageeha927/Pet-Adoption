@@ -50,8 +50,8 @@ router.post('/getDashboard', getDashboard);
 
 router.post('/petSelector', petSelector);
 
-router.delete('/deleteUser/:userId', deleteUser);
-router.delete('/deletePet/:petId', deletePet);
+router.post('/deleteUser/:userId', deleteUser);
+router.post('/deletePet/:petId', deletePet);
 
 
 router.get("/editPet/:petId", renderEditPetForm); 
