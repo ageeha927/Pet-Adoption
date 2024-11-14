@@ -42,8 +42,16 @@
                 Upload A Pet
             </a>
             <a href="/user" class="menu-item">
-                <div class="menu-item-icon">⚙️</div>
+                <div class="menu-item-icon">💻</div>
                 Login
+            </a>
+            <a href="/dashboard" class="menu-item">
+                <% if (loggedInAdmin) { %>
+                    <div class="menu-item-icon">⚙️</div>
+                    Dashboard
+                <% } else { %>
+                    <p></p>
+                <% } %>
             </a>
         </nav>
     </div>
@@ -68,9 +76,19 @@
     <div class="community-banner">
         <div class="banner-content">
             <h2>Join our animal lovers Community</h2>
-            <form action="/user" method="get">
-                <button class="signup-button">Sign Up</button>
-            </form>
+            <% if (loggedInAdmin) { %>
+                <form action="/dashboard" method="get">
+                    <button class="signup-button">Dashboard</button>
+                </form>
+            <% } else if (loggedIn) { %>
+                <form action="/display" method="get">
+                    <button class="signup-button">All Pets</button>
+                </form>
+            <% } else{ %>
+                <form action="/user" method="get">
+                    <button class="signup-button">Sign Up</button>
+                </form>
+            <% } %>
         </div>
         <img src="/girlWithCat.png" alt="Community" class="banner-image">
     </div>
