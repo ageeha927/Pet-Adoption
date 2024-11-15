@@ -361,7 +361,7 @@ const updatePetDetails = async (req, res) => {
         await petToUpdate.save();
 
         const data = await Pet.find({ type: petToUpdate.type });
-        res.redirect('/dashboard')
+        res.redirect('/')
     } catch (error) {
         console.error("Error updating pet:", error);
         res.status(500).send("Error updating pet");
